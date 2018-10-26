@@ -1,0 +1,15 @@
+{
+  "title": "OUTPAW",
+  "url": "https://gwangyi.github.io/",
+  "feed": {
+    "subtitle": "One Useless Thing Per A Week",
+    "filename": "feed.xml",
+    "path": "/feed/feed.xml",
+    "url": "https://gwangyi.github.io/feed/feed.xml",
+    "id": "https://gwangyi.github.io/"
+  },
+  "author": {
+    "name": "Sungkwang Lee",
+    "email": "gwangyi.kr@gmail.com"
+  }
+}
