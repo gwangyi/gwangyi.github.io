@@ -1,10 +1,11 @@
 ---
-title: Eleventy로 블로그 만들기
+title: Eleventy로 블로그 만들기 (1)
 date: 2018-10-29 22:01:00
 tags:
   - post
   - eleventy
   - github-pages
+series: eleventy-blog
 layout: layouts/post.njk
 ---
 

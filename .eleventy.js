@@ -1,13 +1,21 @@
 const { DateTime } = require("luxon");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
+const pluginTOC = require('eleventy-plugin-toc')
+require("prismjs/plugins/custom-class/prism-custom-class");
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
-  eleventyConfig.addPlugin(pluginSyntaxHighlight);
+  eleventyConfig.addPlugin(pluginSyntaxHighlight, {
+      init: function({ Prism }) {
+          Prism.plugins.customClass.prefix('prism-');
+      }
+  });
+  eleventyConfig.addPlugin(pluginTOC)
 
   eleventyConfig.addLayoutAlias("post", "layouts/post.njk");
 
+  eleventyConfig.addFilter("mdi", name => `<span class="icon"><i class="mdi mdi-${name}"></i></span>`);
   eleventyConfig.addFilter("readableDate", dateObj => {
     return DateTime.fromJSDate(dateObj, {zone: 'utc'}).toFormat("dd LLL yyyy");
   });

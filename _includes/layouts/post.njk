@@ -3,6 +3,42 @@ layout: layouts/base.njk
 templateClass: tmpl-post
 ---
 <h1>{{ title }}</h1>
+{%- if tags %}
+<p>
+{%- for tag in tags -%}
+{%- if tag != 'post' -%}
+    {% set tagUrl %}/tags/{{ tag }}/{% endset %}
+    <a href="{{ tagUrl | url }}" class="tag">{{ tag }}</a>
+{%- endif %}
+{%- endfor %}
+</p>
+{% endif -%}
+{%- if date -%}
+<time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
+{% endif %}
+{% if series %}
+<p>
+<strong> Related posts </strong>
+<ul>
+    {% for post in collections.posts %}
+        {% if series in post.url %}
+            {% if post.url == page.url %}
+                <li>{{ post.data.title }}</li>
+            {% else %}
+                <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</ul>
+</p>
+{% endif %}
+
+{%- if 'post' in tags -%}
+<nav class="box">
+    <strong> Table of Contents </strong>
+    {{ content | toc | safe }}
+</nav>
+{%- endif -%}
 
 {{ content | safe }}
 
