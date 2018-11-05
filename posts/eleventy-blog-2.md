@@ -113,7 +113,7 @@ return {
 
 #### header
 
-네비게이션 바 모양을 그대로 살려서 작업할 수도 있겠지만, 네비게이션 바는 [Bulma][bulma]에서 그다지 의미적으로 배치된 요소가 아니라는 단점이 있다. 타이틀도 들어가고, `<ul>` 기반의 네비게이션 바를 같이 쓸 수 있는 예제가 [Bulma][bulma] 구성요소 중에 있는데, [Fullheight hero in 3 parts](https://bulma.io/documentation/layout/hero/#fullheight-hero-in-3-parts)를 사용해보도록 하자. 우리가 쓸 부분은 제목 부분과 하단 탭 부분만 쓰고, `hero-head` 부분에 들어가는 네비게이션은 쓰지 않을 것이다.
+네비게이션 바 모양을 그대로 살려서 작업할 수도 있겠지만, 네비게이션 바는 [Bulma][bulma]에서 그다지 의미적으로 배치된 요소가 아니라는 단점이 있다. 타이틀도 들어가고, `<ul>` 기반의 네비게이션 바를 같이 쓸 수 있는 예제가 [Bulma][bulma] 구성요소 중에 있는데, [Fullheight hero in 3 parts](https://bulma.io/documentation/layout/hero/#fullheight-hero-in-3-parts)가 바로 그것이다. 이를 사용해보도록 하자. 우리가 쓸 부분은 제목 부분과 하단 탭 부분만 쓰고, `hero-head` 부분에 들어가는 네비게이션은 쓰지 않을 것이다.
 {% raw %}
 ```html
         <header>
@@ -127,6 +127,7 @@ return {
 ```
 {% endraw %}
 위와 같은 코드를 다음처럼 수정한다.
+{% raw %}
 ```html
         <header class="hero is-primary">
             <div class="hero-body">
@@ -146,6 +147,7 @@ return {
             </div>
         </header>
 ```
+{% endraw %}
 `<header>` 태그 전체가 hero가 될 것이므로 그에 맞는 클래스를 추가했다. 사이트 제목 부분이 hero의 title이 되었고, feed에서 쓰는 부제목을 추가했다. 이 두 부분은 hero의 body 부분이므로 `hero-body`로 싸여졌다. 네비게이션 부분은 hero의 탭으로 만들었는데, 이 것은 hero의 아랫부분에 들어가야 되므로 `hero-foot`으로 먼저 쌌고, 탭으로 만들기 위해 `tabs` 클래스가 추가된 `<nav>` 태그로 쌌다. `is-boxed` 클래스를 추가해 탭의 모양을 잡아주었다. `<ul>` 태그를 `container`로 감싸줘서 탭이 중앙으로 적당히 정렬되도록 했으며, `nav` 클래스가 [Bulma][bulma]에서 의미를 갖기 때문에 클래스를 빼주었다. 마지막으로, 활성화된 탭은 `is-active` 클래스를 사용해야하므로 `nav-item-active`에서 `is-active`로 바꿔주었다.
 
 #### main
@@ -167,11 +169,11 @@ return {
 ```
 {% endraw %}
 
-단순히 `section` 클래스를 부여한 뒤 `container` 클래스가 부여된 `<div>` 태그로 감쌌다. 안에는 본문만 들어갈 것이므로 `content`를 부여했다.
+단순히 [`section`](https://bulma.io/documentation/layout/section) 클래스를 부여한 뒤 [`container`](https://bulma.io/documentation/layout/container) 클래스가 부여된 `<div>` 태그로 감쌌다. 안에는 본문만 들어갈 것이므로 [`content`](https://bulma.io/documentation/elements/content)를 부여했다.
 
 #### footer
 
-꼬릿말에는 저작권 표시와 나의 깃헙 프로필 페이지를 추가할 것이다. 기존의 `<footer>` 태그는 내용이 비어 있으니 지우고 다음 내용으로 대체하자.
+꼬릿말에는 저작권 표시와 나의 깃헙 프로필 페이지를 추가할 것이다. 기존의 `<footer>` 태그는 내용이 비어 있으니 지우고 다음 내용으로 대체하자.  [Bulma][bulma]는 [`footer`](https://bulma.io/documentation/layout/footer) 구성요소를 가지고 있다.
 {% raw %}
 ```html
         <footer class="footer">

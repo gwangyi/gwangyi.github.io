@@ -31,4 +31,5 @@
 
 pre[class*="language-"] code[class*="language-"] {
     white-space: pre-wrap;
+    word-break: break-all;
 }
