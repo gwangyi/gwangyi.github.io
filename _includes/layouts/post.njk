@@ -3,7 +3,7 @@ layout: layouts/base.njk
 templateClass: tmpl-post
 ---
 <h1>{{ title }}</h1>
-{%- if tags %}
+{%- if tags and 'post' in tags %}
 <p>
 {%- for tag in tags -%}
 {%- if tag != 'post' -%}
@@ -21,7 +21,7 @@ templateClass: tmpl-post
 <strong> Related posts </strong>
 <ul>
     {% for post in collections.posts %}
-        {% if series in post.url %}
+        {% if series == post.data.series %}
             {% if post.url == page.url %}
                 <li>{{ post.data.title }}</li>
             {% else %}

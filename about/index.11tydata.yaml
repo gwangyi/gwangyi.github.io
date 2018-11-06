@@ -1,0 +1,70 @@
+sections:
+  - title: Employment
+    entries:
+      - title: Software Engineer
+        description: Samsung Electronics @ Hwaseong-si, South Korea
+        period: 2016 to Present
+        items:
+          - DAPS (Polymorphic Modular SSD Test Framework)
+  - title: Education
+    entries:
+      - title: Ph.D. in EE
+        description: POSTECH @ Pohang-si, South Korea
+        period: 2010 to 2016
+        items:
+          - Samsung Graduate Fellowship
+          - "Dissertion: _Software Design for Non-Volatile Memory_"
+      - title: BS in EE
+        description: POSTECH @ Pohang-si, South Korea
+        period: 2006 to 2010
+        items:
+          - Scholarship from Korea Government
+          - "Graduation portfolio: Cart Robot using Stereo Vision"
+      - title: BS in CS
+        description: POSTECH @ Pohang-si, South Korea
+        period: 2006 to 2010
+        items:
+          - "Graduation paper: Stripping DRM with DirectShow"
+
+  - title: Miscellaneous Experience
+    entries:
+      - title: Teaching Assistant
+        description: Assistant teaching for Smartphone Programming
+      - title: Member
+        description: of [POSTECH Laboratory for UNIX Security(PLUS)](http://plus.or.kr)
+      - title: Visiting Scholar
+        description: Intel Corporation
+        period: Oct. 2011 to Nov. 2011
+
+  - title: Professional Qualifications
+    entries:
+      - title: SW Cert Expert
+        description: Samsung Electronics SW Certification
+
+  - title: Programming Skills
+    entries:
+      - title: Python, C
+        score: 4
+      - title: C++, Ruby, Javascript, Java
+        score: 3
+      - title: Verilog/SystemVerilog
+        score: 2
+
+  - title: Interests
+    entries:
+      - Software optimization for non-volatile memory
+      - SSD relability enhancing method w/ ML
+      - Electron, Vue.js, Eleventy
+
+  - title: Awards
+    entries:
+      - title: Work Smart Workflow Improvement(업무효율화) (Samsung Electronics)
+        description: DAPS
+      - title: 2016 1st 창조전문가(Creative Expert) _우수상(Excellence Award)_ (Samsung Electronics)
+        description: DNA (Kyeongsan Kim, Dongki Kim, **Sungkwang Lee**, Junhyeok Im, Hyekyeong Jang)
+      - title: Codegate 2009 International Hacking Protection Competition - _ZERONE EYE (3rd Prize)_
+        description: PLUS (Junho Jang, **Sungkwang Lee**, Taewoong Jang, Myeonghoon Cha)
+      - title: Codegate 2008 International Hacking Protection Competition - _ZERONE HEART (1st Prize)_
+        description: PLUS (Byeongwook Bae, Jaehyeok Song, **Sungkwang Lee**)
+
+# vim: ts=2 sw=2 et

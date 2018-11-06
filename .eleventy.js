@@ -1,7 +1,8 @@
 const { DateTime } = require("luxon");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
-const pluginTOC = require('eleventy-plugin-toc')
+const pluginTOC = require('eleventy-plugin-toc');
+const pluginYamldata = require('eleventy-plugin-yamldata');
 require("prismjs/plugins/custom-class/prism-custom-class");
 
 module.exports = function(eleventyConfig) {
@@ -11,7 +12,8 @@ module.exports = function(eleventyConfig) {
           Prism.plugins.customClass.prefix('prism-');
       }
   });
-  eleventyConfig.addPlugin(pluginTOC)
+  eleventyConfig.addPlugin(pluginTOC);
+  eleventyConfig.addPlugin(pluginYamldata);
 
   eleventyConfig.addLayoutAlias("post", "layouts/post.njk");
 
@@ -49,6 +51,7 @@ module.exports = function(eleventyConfig) {
   /* Markdown Plugins */
   let markdownIt = require("markdown-it");
   let markdownItAnchor = require("markdown-it-anchor");
+  let markdownItDeflist = require("markdown-it-deflist");
   let options = {
     html: true,
     breaks: true,
@@ -62,6 +65,7 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.setLibrary("md", markdownIt(options)
     .use(markdownItAnchor, opts)
+    .use(markdownItDeflist)
   );
 
   return {
