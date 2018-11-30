@@ -1,6 +1,6 @@
 ---
 title: zplug 소개
-date: 2018-11-24 12:01:00
+date: 2018-12-01 12:01:00
 tags:
   - post
   - zsh
