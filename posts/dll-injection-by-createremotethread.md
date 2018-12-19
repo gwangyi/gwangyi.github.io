@@ -9,6 +9,9 @@ tags:
 layout: layouts/post.njk
 ---
 
+**ChangeLog**
+- 2018/12/19: DllMain 내용 보강
+
 ## Introduction
 
 우리가 컴퓨터를 사용하는 이유는, 컴퓨터를 통해 내가 직면한 문제를 해결하는데에 그 근본이 있을 것이다. 그 문제는 암산으로 해결하기엔 너무 복잡한 수학 문제의 답을 구하는 것일 수도 있고, 손으로 한땀 한땀 하기에는 너무나 귀찮은 일을 자동화하는 것일 수도 있고, 심심함을 해소하려는 것일 수도 있다.
@@ -52,6 +55,13 @@ layout: layouts/post.njk
 [`CreateRemoteThread()`][createremotethread] 함수는 스레드를 생성하는 함수인데, 저 함수를 호출하는 프로세스가 아닌 다른 프로세스에 스레드를 생성하는 기능을 가지고 있다. 여기서 재미있는 점은 DLL을 읽어서 실행가능한 영역에 적재하는 함수인 [`LoadLibrary()`][loadlibrary] 함수가 스레드 프로시저와 비슷한 모양을 가지고 있다는 것이다. [`CreateRemoteThread()`][createremotethread]를 활용하는 DLL injection은, 바로 이 점을 이용해서 원하는 DLL을 적재하는 스레드를 생성시켜 대상 프로세스에 나의 코드를 주입하는 방법이다.
 
 [loadlibrary]: https://docs.microsoft.com/en-us/windows/desktop/api/libloaderapi/nf-libloaderapi-loadlibrarya
+
+### Hook
+
+[`SetWindowsHookEx()`][setwindowshookex] 함수를 이용하면 좀 더 깔끔하게 API를 상대 프로세스에 주입하는 것이 가능하다. 메시지 루프가 돌 때 이 함수를 통해 집어넣은 훅이 동작하게끔 해주는 함수인데, 그 동작을 위해서 OS에서 직접 훅을 박아넣어 주기 때문에 웬만하면 무리없이 동작할 수 있다.
+다만 메시지 루프가 돌아야 동작을 한다는 점 때문에, 메시지 루프가 없으면 소용이 없다는 문제가 있다. 그 외에도 주입 시점을 지정하기 어렵다거나, 이것저것 가리지 않고 훅이 박혀버린다거나 하는 단점이 있어 개인적으로 선호하지 않는다.
+
+[setwindowshookex]: https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setwindowshookexa
 
 ## Mechanism
 
@@ -156,6 +166,35 @@ if(GetExitCodeThread(hThread, &dwRet))
 
 이 코드에서는 32/64bit 문제를 건드리지 않았기 때문에 32/64bit 각각 버전으로 빌드를 따로해야된다.
 참고로 스트링을 받는 Win32API 함수는 대부분 A버전과 W버전 두 가지가 있고 UNICODE가 정의됐는지 여부에 따라 A나 W로 define되어있는 A/W가 붙지 않은 함수가 존재한다. A/W가 붙지 않은 버전은 매크로로 구현되어 있기 때문에 실제 symbol이 없어서 이 때는 A가 붙은 것으로 제한해서 사용했다.
+
+### Injecting Dll
+
+실행시키고 싶은 코드는 Dll의 형태로 만들어서 [`LoadLibrary()`][loadlibrary] 함수를 통해 대상 프로세스에서 로딩시킬 것이다. 앞에서 언급했듯, [`LoadLibrary()`][loadlibrary]가 호출되면 `DllMain()`이 호출되는데, 이 함수는 다음 형태처럼 생겨야 한다.
+
+```c
+BOOL WINAPI DllMain(
+  _In_ HINSTANCE hinstDLL,
+  _In_ DWORD     fdwReason,
+  _In_ LPVOID    lpvReserved
+);
+```
+
+이 함수는 dll이 적재되는 시점 뿐만 아니라 여러 시점에서 호출되는데, 실행시키고 싶은 코드를 여기다 넣게 되면 injection과 동시에 실행이 돼서 좋기는 하지만 저 모든 시점에서 실행되기 때문에 잘 구분할 필요가 있다.
+각 시점은 `fdwReason` 패러미터를 통해 구분할 수 있다. 이 중 처음 적재될 때는 `DLL_PROCESS_ATTACH` 값을 가지므로, 이 때만 실행되게 하면 되겠다. 이 함수가 `FALSE`를 반환하면 적재 도중 오류가 발생한 것으로 취급하여 `LoadLibrary()`는 실패하고 0을 반환하게 된다. `TRUE`를 반환하면 적재가 성공하여 대상 프로세스에 dll이 성공적으로 안착하게 된다.
+여기서 두 가지 활용방안이 있는데, 첫째는 교과서적으로 `TRUE`를 반환하여 성공적으로 로드되는 것이다. 이 때 장점은 dll이 성공적으로 프로세스에 로딩되어 지속적인 효과를 줄 수 있다는 것이고, 단점은 dll이 이미 로드된 상태라 다시 injection을 할 수 없다는 것과, dll이 정상적인 방법으로 로딩된 것이 아니다보니, 대상 프로세스가 죽을 때까지 내려오지 않아 dll을 수정하는 것이 불가능하다는 것이다. 이 것은 injection될 dll을 계속 수정하면서 작업해야 할 때 치명적인 문제가 될 수 있는데, 물론 `LoadLibrary()`를 사용했던 것과 비슷한 방법으로 `FreeLibrary()`를 remote thread로 박아넣어 언로드시킬 수도 있다. 그러나 이 때는 언로드될 수 있도록 리소스를 비롯한 많은 것들을 원상복구하는 것이 반드시 필요하며, 적재가 해제될 때 `DLL_PROCESS_DETACH`로 호출되는 `DllMain()`에서 잘 관리해줘야만 한다. 이 때 되돌리는 것을 제대로 하지 않으면 `FreeLibrary()`가 실패하거나 대상 프로세스가 죽어버릴 수도 있으므로 조심해서 자원들을 풀어주도록 하자.
+두 번째는 `FALSE`를 의도적으로 리턴하여 dll이 적재되지 않게 할 수도 있다. 코드는 실행되었지만 실제로 dll이 로드된 것은 아니므로, 여러번 다시 inject가 가능하다. 다만 `DllMain()`이 호출된 상태는 `LoadLibrary()`가 실행중인 상태이므로 여러 가지 제약사항이 있는 상태이다. `LoadLibrary()` 중에 또 `LoadLibrary()`를 호출하게 됐을 경우, MSDN에서는 데드락이 발생할 수 있으므로 절대 하지 말라고 경고되어 있다. 그 외에도 정상적인 상태라 할 수 없어 간단한 코드 정도는 그렇게 실행할 수 있겠지만, 좀 복잡해지거나 지속시간을 가져야 하는 경우라면 스레드를 따로 생성해서 거기서 처리하는 것을 추천한다. 물론 이 경우는 `FALSE`를 일부러 리턴해 강제로 로딩을 막는 방법은 사용할 수 없을 것이다.
+
+예시는 다음과 같다.
+```c
+#include <windows.h>
+
+BOOL WINAPI DllMain(HINSTANCE hInstDll, DWORD fdwReason, LPVOID lpvReserved) {
+    if (fdwReason == DLL_PROCESS_ATTACH) {
+        MessageBoxA(NULL, "Hello, world!", "I'm Injected", MB_OK);
+    }
+    return TRUE;
+}
+```
 
 ## Future Work
 
