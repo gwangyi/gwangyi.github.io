@@ -1,0 +1,10 @@
+aside#tags h4 { display: inline-block; }
+aside#tags ul { display: inline-block; padding: 0; margin: 0; }
+aside#tags li { display: inline-block; font-size: 1rem; }
+aside#tags a, aside#tags a:hover {
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  background: lightgray;
+  color: #222;;
+  text-decoration: none;
+}

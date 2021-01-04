@@ -1,0 +1,8 @@
+{{- define "main" }}
+<h3>{{ .Name | humanize }}</h3>
+<ul id="posts" class="{{ .Name }}">
+    {{ range .Data.Terms.Alphabetical }}
+        <li><a href="{{ .Page.Permalink }}">{{ .Page.Title | humanize }}</a> {{ .Count }}</li>
+    {{ end }}
+</ul>
+{{- end }}

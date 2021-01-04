@@ -1,3 +1,6 @@
 [submodule "themes/etch"]
 	path = themes/etch
 	url = https://github.com/LukasJoswiak/etch.git
+[submodule "themes/mdi"]
+	path = themes/mdi
+	url = https://github.com/mochaaP/hugo-shortcode-mdi

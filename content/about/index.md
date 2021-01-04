@@ -1,7 +1,6 @@
 ---
 title: "About"
 date: 2020-12-22T21:45:52+01:00
-draft: true
 ---
 
 {{< toc >}}

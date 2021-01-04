@@ -1,6 +1,6 @@
 baseURL = "https://gwangyi.github.io/"
 title = "Worldwide gwangyi"
-theme = "etch"
+theme = ["mdi", "etch"]
 languageCode = "ko-KR"
 enableInlineShortcodes = true
 pygmentsCodeFences = true
@@ -21,6 +21,13 @@ pygmentsUseClasses = true
     weight = 10
 
   [[menu.main]]
+    identifier = "tags"
+    name = "tags"
+    title = "tags"
+    url = "/tags/"
+    weight = 11
+
+  [[menu.main]]
     identifier = "about"
     name = "about"
     title = "about"
@@ -28,8 +35,15 @@ pygmentsUseClasses = true
     weight = 20
 
 [permalinks]
-  posts = "/:title/"
+  posts = "/:section/:filename"
 
 [markup.goldmark.renderer]
   # Allows HTML in Markdown
   unsafe = true
+
+[markup.highlight]
+  lineNos = true
+
+[taxonomies]
+  series = "series"
+  tag = "tags"

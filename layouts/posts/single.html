@@ -1,0 +1,44 @@
+{{ define "main" }}
+<article>
+    <header id="post-header">
+        <h1>{{ .Title }}</h1>
+        {{- if isset .Params "date" -}}
+            <time>{{ .Date.Format "January 2, 2006" }}</time>
+        {{- end -}}
+    </header>
+    <aside id="tags">
+      <h4>Tags</h4>
+      <ul>
+        {{ range (.GetTerms "tags") }}
+        <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+        {{ end }}
+      </ul>
+    </aside>
+    <aside id="toc">
+      <h4>Table of Contents</h4>
+      {{ .Page.TableOfContents }}
+    </aside>
+    {{- .Content -}}
+    {{- if $.Page.GetTerms "series" }}
+    <h2>Related topics</h2>
+    {{- range $.Page.GetTerms "series" }}
+    {{- if index .Site.Taxonomies.series .Name }}
+    <h3><a href="{{ .Page.RelPermalink }}">{{ .Name | humanize }}</a></h3>
+    <ul>
+      {{- range (index .Site.Taxonomies.series .Name).Pages.ByDate }}
+      <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    <script src="https://utteranc.es/client.js"
+        repo="gwangyi/gwangyi.github.io"
+        issue-term="pathname"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+</article>
+{{ end }}
