@@ -1,0 +1,132 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="To be survived wordwidely"><link rel="shortcut icon" href=https://gwangyi.github.io/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>Eleventy로 블로그 만들기 (3)</title></head><body><header id=banner><h2><a href=https://gwangyi.github.io/>Worldwide gwangyi</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/tags/ title=tags>tags</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>Eleventy로 블로그 만들기 (3)</h1><time>November 24, 2018</time></header><aside id=tags><h4>Tags</h4><ul><li><a href=https://gwangyi.github.io/tags/eleventy/>eleventy</a></li><li><a href=https://gwangyi.github.io/tags/github-pages/>github-pages</a></li></ul></aside><aside id=toc><h4>Table of Contents</h4><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#background>Background</a><ul><li><a href=#definition-list>Definition List</a></li><li><a href=#yaml-as-a-data-file>YAML as a data file</a></li></ul></li><li><a href=#about-page-design>&lsquo;About page&rsquo; design</a></li><li><a href=#future-work>Future Work</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></aside><h2 id=introduction>Introduction</h2><p>지난시간까지 CSS까지 입혀서 블로그를 이쁘게 꾸며보는데까지 진행했다. 이제는 블로그 글에 대한 신빙성을 높여주고 읽는 사람에게 나를 어필할 수 있는 <a href=https://gwangyi.github.io/about/>About</a> 페이지를 만들어보도록 하자.</p><h2 id=background>Background</h2><p>About 페이지를 만드는 것도 여러 방식이 있을 수 있겠지만, 결국 About 페이지에 담기는 것은 term과 그 term에 대한 설명들이 될 것이므로, 어느 정도 정형화된 형태를 가질 것이라는 것을 예상해볼 수 있다.</p><p>정형화된 틀에 맞춰서 데이터 중심으로 페이지를 설계하는 것이 바로 template이고, eleventy는 바로 그 template 기능을 주로 사용하는 툴이므로 아주 적합한 사용방법이 아닐 수 없다.</p><h3 id=definition-list>Definition List</h3><p>HTML에는 term과 description의 pair들을 모아 list로 만들어주는 태그가 존재한다. 바로 <a href=https://www.w3.org/TR/html50/grouping-content.html#the-dl-element><code>&lt;dl></code></a> 라는 태그인데, 자식 노드로 <code>&lt;dt></code>, <code>&lt;dd></code> 태그를 통해서 definition list를 구성할 수 있다. 하지만 곤란한 점이 있는데, <a href=https://www.markdownguide.org/>markdown</a>의 기본 정의에는 definition list를 지원하지 않는다는 점이다.
+물론 용도가 확실하고 수요가 있는 태그들이라 여러 커스텀 마크다운 해석기에서 지원하기도 하는데, 제일 보편적인 형태는 다음과 같이 정의하는 방식을 사용한다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-markdown data-lang=markdown>term
+: definition
+</code></pre></td></tr></table></div></div><p>이렇게 사용할 경우 다음처럼 표시된다.</p><blockquote><dl><dt>term</dt><dd>definition</dd></dl></blockquote><p>다만, eleventy에서 기본적으로 사용하고 있는 마크다운 해석기인 <a href=https://markdown-it.github.io/>markdown-it</a>은 가장 기본적인 markdown 문법만을 지원하고, definition list같은 확장 문법은 플러그인을 통해 활성화시켜야 한다. 해당 플러그인의 이름은 <a href=https://github.com/markdown-it/markdown-it-deflist><code>markdown-it-deflist</code></a>이며, <code>npm</code>이나 <code>yarn</code>을 통해 설치할 수 있다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>yarn add markdown-it-deflist
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=hl><span class=lnt> 3
+</span></span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=hl><span class=lnt>17
+</span></span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript>  <span class=cm>/* Markdown Plugins */</span>
+  <span class=kd>let</span> <span class=nx>markdownIt</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;markdown-it&#34;</span><span class=p>);</span>
+<span class=hl>  <span class=kd>let</span> <span class=nx>markdownItAnchor</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;markdown-it-anchor&#34;</span><span class=p>);</span>
+</span>  <span class=kd>let</span> <span class=nx>markdownItDeflist</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;markdown-it-deflist&#34;</span><span class=p>);</span>
+  <span class=kd>let</span> <span class=nx>options</span> <span class=o>=</span> <span class=p>{</span>
+    <span class=nx>html</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span>
+    <span class=nx>breaks</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span>
+    <span class=nx>linkify</span><span class=o>:</span> <span class=kc>true</span>
+  <span class=p>};</span>
+  <span class=kd>let</span> <span class=nx>opts</span> <span class=o>=</span> <span class=p>{</span>
+    <span class=nx>permalink</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span>
+    <span class=nx>permalinkClass</span><span class=o>:</span> <span class=s2>&#34;direct-link&#34;</span><span class=p>,</span>
+    <span class=nx>permalinkSymbol</span><span class=o>:</span> <span class=s2>&#34;#&#34;</span>
+  <span class=p>};</span>
+
+  <span class=nx>eleventyConfig</span><span class=p>.</span><span class=nx>setLibrary</span><span class=p>(</span><span class=s2>&#34;md&#34;</span><span class=p>,</span> <span class=nx>markdownIt</span><span class=p>(</span><span class=nx>options</span><span class=p>)</span>
+<span class=hl>    <span class=p>.</span><span class=nx>use</span><span class=p>(</span><span class=nx>markdownItAnchor</span><span class=p>,</span> <span class=nx>opts</span><span class=p>)</span>
+</span>    <span class=p>.</span><span class=nx>use</span><span class=p>(</span><span class=nx>markdownItDeflist</span><span class=p>)</span>
+  <span class=p>);</span>
+</code></pre></td></tr></table></div></div><p><code>.eleventy.js</code>의 대략 43번째줄 가량부터 <a href=https://markdown-it.github.io/>markdown-it</a>의 플러그인을 설정하고 있는 부분을 볼 수 있다. 원래는 <a href=https://github.com/valeriangalliat/markdown-it-anchor>markdown-it-anchor</a> 플러그인만 추가되어 있지만, definition list를 지원하는 플러그인인 <a href=https://github.com/markdown-it/markdown-it-deflist>markdown-it-deflist</a>를 추가한 것이다. 이렇게 바꾸고 나면 그 뒤부터는 definition list를 사용할 수 있다.</p><h3 id=yaml-as-a-data-file>YAML as a data file</h3><p>eleventy는 template에 사용되는 <a href=https://www.11ty.io/docs/data/>데이터파일을 템플릿과 별개로 관리</a>할 수 있다. 일반적으로는 템플릿의 front matter로 기록하지만, 동일한 템플릿을 서로 다른 데이터로 사용하기 위해 <a href=https://www.11ty.io/docs/data-template-dir/>분리할 수 있도록</a> 되어 있다. 다만, 지원하는 데이터 파일의 포맷은 <code>.json</code> 파일과 <code>.js</code> 파일이 전부인 상태로, 특별히 확장할 수 있는 API를 현재로썬 지원하고 있지 않다.
+front matter는 de facto standard인 YAML로 작성할 수 있게 한다 쳐도, 템플릿 데이터를 YAML로 사용할 수 없는 것은 상당히 불편한 일이다. 물론 <code>.js</code>는 evaluate되므로 <code>.js</code>로 YAML을 읽어와서 반환하는 방식으로 템플릿 데이터를 만들 수도 있겠지만, 불필요한 코드가 들어가고 watch를 위한 수정사항 tracking도 통하지 않으므로 기각하였다.
+그래서 eleventy의 내부 동작을 잘 살펴보고 적당한 <a href=https://en.wikipedia.org/wiki/Monkey_patch>monkey-patching</a>을 통해 <code>.yaml</code> 파일도 template data file 로 사용할 수 있도록 해 주는 플러그인을 제작했다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>yarn add eleventy-plugin-yamldata
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=hl><span class=lnt> 4
+</span></span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=hl><span class=lnt>10
+</span></span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kr>const</span> <span class=p>{</span> <span class=nx>DateTime</span> <span class=p>}</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;luxon&#34;</span><span class=p>);</span>
+<span class=kr>const</span> <span class=nx>pluginRss</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;@11ty/eleventy-plugin-rss&#34;</span><span class=p>);</span>
+<span class=kr>const</span> <span class=nx>pluginSyntaxHighlight</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;@11ty/eleventy-plugin-syntaxhighlight&#34;</span><span class=p>);</span>
+<span class=hl><span class=kr>const</span> <span class=nx>pluginTOC</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;eleventy-plugin-toc&#39;</span><span class=p>);</span>
+</span><span class=kr>const</span> <span class=nx>pluginYamldata</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;eleventy-plugin-yamldata&#39;</span><span class=p>);</span>
+
+<span class=nx>module</span><span class=p>.</span><span class=nx>exports</span> <span class=o>=</span> <span class=kd>function</span><span class=p>(</span><span class=nx>eleventyConfig</span><span class=p>)</span> <span class=p>{</span>
+  <span class=nx>eleventyConfig</span><span class=p>.</span><span class=nx>addPlugin</span><span class=p>(</span><span class=nx>pluginRss</span><span class=p>);</span>
+  <span class=nx>eleventyConfig</span><span class=p>.</span><span class=nx>addPlugin</span><span class=p>(</span><span class=nx>pluginSyntaxHighlight</span><span class=p>);</span>
+<span class=hl>  <span class=nx>eleventyConfig</span><span class=p>.</span><span class=nx>addPlugin</span><span class=p>(</span><span class=nx>pluginTOC</span><span class=p>);</span>
+</span>  <span class=nx>eleventyConfig</span><span class=p>.</span><span class=nx>addPlugin</span><span class=p>(</span><span class=nx>pluginYamldata</span><span class=p>);</span>
+</code></pre></td></tr></table></div></div><p>다음에 기회가 있으면 플러그인을 만드는 과정에 대해서도 포스팅하도록 하겠다.</p><h2 id=about-page-design>&lsquo;About page&rsquo; design</h2><p>About 페이지는 여러 개의 섹션으로 나누고, 각 섹션마다 주제와 설명, 그리고 세부 항목들을 나열하려고 한다. 즉, 다음과 같은 형식이 될 것이다.</p><blockquote><p><strong>Section</strong></p><dl><dt>term</dt><dd><em>description</em> ― period<ul><li>item</li><li>item</li></ul></dd></dl></blockquote><p>참고로, Section은 <code>## Section</code> 이 되어야 하겠으나, 이 문서의 구조를 깨버리기 때문에 강조하는 것으로 대체했다.</p><p>이러한 점을 감안해서, about page의 데이터는 다음과 같이 형태를 갖추도록 구성할 것이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-yaml data-lang=yaml><span class=nt>sections</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>Section 1</span><span class=w>
+</span><span class=w>    </span><span class=nt>entries</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>Term 1</span><span class=w>
+</span><span class=w>        </span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=l>Description 1</span><span class=w>
+</span><span class=w>        </span><span class=nt>period</span><span class=p>:</span><span class=w> </span><span class=m>2016</span><span class=w> </span><span class=l>to Present</span><span class=w>
+</span><span class=w>        </span><span class=nt>items</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=l>Item 1</span><span class=w>
+</span><span class=w>          </span>- <span class=l>Item 2</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>Term 2</span><span class=w>
+</span><span class=w>        </span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=l>Description 2</span><span class=w>
+</span><span class=w>        </span><span class=nt>period</span><span class=p>:</span><span class=w> </span><span class=m>2010</span><span class=w> </span><span class=l>to 2016</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>Section 2</span><span class=w>
+</span><span class=w>    </span><span class=nt>entries</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>...</span><span class=w>
+</span></code></pre></td></tr></table></div></div><p><code>sections</code> 키 안에 모든 섹션을 리스트로 넣고, 각 섹션은 <code>title</code>과 <code>entries</code>를 갖는다. <code>entries</code>는 term과 description을 가지며, 섹션과 비슷한 방식으로 <code>term</code>이 정의된다.</p><p>그러면 이걸 표현할 nunjucks + markdown 템플릿을 구성해보면 다음처럼 쓸 수 있을 것이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-markdown data-lang=markdown>{% for section in sections %}
+<span class=gu>## {{ section.title }}
+</span><span class=gu></span>{% for entry in section.entries %}
+{% if entry.title -%}
+{{ entry.title }}
+{% if entry.description %}: <span class=ge>_{{ entry.description }}_</span>{% if entry.period %} <span class=ni>&amp;horbar;</span> {{ entry.period }}{% endif %}{% endif -%}
+{% if entry.score %}: {% for i in range(5) %}{% if i <span class=p>&lt;</span> <span class=nt>entry.score</span> <span class=err>%}&amp;</span><span class=na>starf</span><span class=err>;{%</span> <span class=na>else</span> <span class=err>%}&amp;</span><span class=na>star</span><span class=err>;{%</span> <span class=na>endif</span> <span class=err>%}{%</span> <span class=na>endfor</span> <span class=err>%}{%</span> <span class=na>endif</span> <span class=err>%}</span>
+<span class=err>{%</span><span class=na>-</span> <span class=na>for</span> <span class=na>item</span> <span class=na>in</span> <span class=na>entry</span><span class=err>.</span><span class=na>items</span> <span class=err>%}</span>
+  <span class=k>*</span> <span class=err>{{</span> <span class=na>item</span> <span class=err>}}</span>
+<span class=err>{%</span><span class=na>-</span> <span class=na>endfor</span> <span class=err>%}</span>
+<span class=err>{%</span> <span class=na>else</span> <span class=na>-</span><span class=err>%}</span>
+<span class=k>*</span> <span class=err>{{</span> <span class=na>entry</span> <span class=err>|</span> <span class=na>safe</span> <span class=err>}}</span>
+<span class=err>{%</span> <span class=na>endif</span> <span class=err>%}</span>
+<span class=err>{%</span> <span class=na>endfor</span> <span class=err>%}</span>
+<span class=err>{%</span> <span class=na>endfor</span> <span class=err>%}</span>
+</code></pre></td></tr></table></div></div><p>구체적인 태그들에 대한 설명은 <a href=https://mozilla.github.io/nunjucks/templating.html>Nunjucks Templating Docs</a>를 참조하자.</p><h2 id=future-work>Future Work</h2><p>문서 도중에 언급한 yaml data plugin의 구조에 대해서 포스팅 할 것이 남아 있다. 그리고 지금껏 만든 블로그를 <a href=https://pages.github.com>github pages</a> 서비스를 통해 발행하는 방법까지 하고 나면 블로그 시리즈는 대단원의 막을 내릴 수 있을 것 같다.</p><h2 id=conclusion>Conclusion</h2><p>About page에 한정시켜서 만든 것이지만, 정형화된 구조를 가진 데이터를 특정 형태에 맞게 출력하는데 유리한 template과 template data file을 이용해 페이지를 만들어 보았다. 이를 통해서 보여주는 부분과 실제 데이터를 분리했기 때문에 추후 리뉴얼이나 다른 곳에 적용시킬 때 활용도가 높도록 나누어주는 것을 할 수 있을 것이다.</p><h2>Related topics</h2><h3><a href=/series/eleventy-blog/>Eleventy blog</a></h3><ul><li><a href=/posts/eleventy-blog/>Eleventy로 블로그 만들기 (1)</a></li><li><a href=/posts/eleventy-blog-2/>Eleventy로 블로그 만들기 (2)</a></li><li><a href=/posts/eleventy-blog-3/>Eleventy로 블로그 만들기 (3)</a></li></ul><script src=https://utteranc.es/client.js repo=gwangyi/gwangyi.github.io issue-term=pathname label=Comment theme=preferred-color-scheme crossorigin=anonymous async></script></article></main><footer id=footer>Copyright © 2020 Sungkwang Lee</footer></body></html>

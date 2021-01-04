@@ -1,0 +1,63 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="To be survived wordwidely"><link rel="shortcut icon" href=https://gwangyi.github.io/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>Eleventy로 블로그 만들기 (1)</title></head><body><header id=banner><h2><a href=https://gwangyi.github.io/>Worldwide gwangyi</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/tags/ title=tags>tags</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>Eleventy로 블로그 만들기 (1)</h1><time>October 29, 2018</time></header><aside id=tags><h4>Tags</h4><ul><li><a href=https://gwangyi.github.io/tags/eleventy/>eleventy</a></li><li><a href=https://gwangyi.github.io/tags/github-pages/>github-pages</a></li></ul></aside><aside id=toc><h4>Table of Contents</h4><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#background>Background</a></li><li><a href=#installation>Installation</a></li><li><a href=#how-to-post>How to Post</a></li><li><a href=#future-work>Future Work</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></aside><h2 id=introduction>Introduction</h2><p>예전에 야심찬 목표를 가지고 블로그를 만든 적이 있었다. 당시 블로그 작성을 위해 <a href=https://jekyllrb.com/>Jekyll</a>을 사용했는데, <a href=https://www.ruby-lang.org/>Ruby</a>를 쓰던 관성이 조금 남아있기도 했고, static site generator에 대해 다양하게 알지 못하던 때였다.</p><p>최근에 블로그를 다시 살리려고 알아보는데, <a href=https://nodejs.org/>NodeJS</a> + <a href=https://www.npmjs.com/>NPM</a>의 의존성 관리에 비하면 <a href=https://rubygems.org/>RubyGems</a>는 <a href=https://rvm.io/>RVM</a>을 쓰지 않는 이상 시스템 라이브러리를 건드려야 되는 등 지저분하게 느껴져서, <a href=https://jekyllrb.com/>Jekyll</a> 외의 다른 static site generator를 찾다가 <a href=https://11ty.io/>Eleventy</a>를 발견하게 됐다.</p><p>그리하여, 아직 완전히 익숙해지지 못한 <a href=https://nodejs.org/>NodeJS</a> 기반 static site generator인 <a href=https://11ty.io/>Eleventy</a>를 이용해 블로그를 만들어보자는 대장정이 시작된 것이다.</p><h2 id=background>Background</h2><p>Static Site Generator라고 불리는 일련의 툴들은, 일반적으로 웹 사이트 제작에 사용하는 <a href=https://www.w3.org/html/>HTML</a>보다 조금 더 간결한 <a href=https://www.markdownguide.org/>Markdown</a>과 같은 마크업 언어를 사용해서 컨텐츠를 작성하면, <a href=http://jinja.pocoo.org/>Jinja</a>나 <a href=https://shopify.github.io/liquid/>Liquid</a> 등의 템플릿 엔진을 통해 사이트를 <em>build</em> 하는 기능을 수행한다. <a href=https://wordpress.org/>WordPress</a> 등의 CMS와의 차이점은, 요청이 있을 때마다 DB를 참조하여 보여줄 페이지의 내용을 생성하는 CMS와는 달리 static site generator는 전체 사이트 구조를 미리 생성해 두고 요청이 있을 때는 미리 생성해둔 페이지를 서비스한다는 차이가 있다. 미리 생성된 페이지를 서비스하기 때문에 잦은 업데이트가 없는 부분에서 유리하다.</p><p>이 바닥에서 제일 유명한 툴이 <a href=https://pages.github.com/>GitHub Pages</a>에서 지원해주는 <a href=https://jekyllrb.com/>Jekyll</a>로, <a href=https://www.ruby-lang.org/>Ruby</a> 기반으로 <a href=https://www.markdownguide.org/>Markdown</a>과 <a href=https://shopify.github.io/liquid/>Liquid</a>를 이용해 사이트를 생성할 수 있다. 이 외에도 <a href=https://www.python.org/>Python</a> 기반의 <a href=https://hyde.github.io/>Hyde</a>, <a href=https://golang.org/>Go</a> 기반의 <a href=https://gohugo.io/>Hugo</a> 등이 있다. 이 외에도 <a href=https://staticgen.com/>StaticGen</a> 사이트에서 다양한 static site generator들을 접할 수 있다.</p><p>이 중에서 특별히 <a href=https://11ty.io/>Eleventy</a>를 선택한 이유는 다음과 같다.</p><ul><li><a href=https://nodejs.org/>NodeJS</a>를 사용한다.</li><li>다양한 마크업 언어와 템플릿 엔진을 사용할 수 있다.</li><li>쓰는 사람이 <em>아직</em> 없어 보인다.</li></ul><h2 id=installation>Installation</h2><p><a href=https://11ty.io/>Eleventy</a>는 site generator일 뿐으로, 블로그처럼 쓰기 위해서는 골격을 짜 줄 필요가 있다. 다만 우리는 바쁜 사람들로, 골격을 처음부터 짜려면 <a href=https://11ty.io/>Eleventy</a>에 대해 심도있는 공부를 할 필요가 있기 때문에 미리 만들어진 골격으로부터 시작할 것이다.</p><p><a href=https://11ty.io/>Eleventy</a> 개발자 측에서 제공하는 간단한 골격이 이미 만들어져 있으므로 가져다 쓰도록 하자. 저장소는 <a href=https://github.com/11ty/eleventy-base-blog>eleventy-base-blog</a>에서 볼 수 있다.</p><p>제일 먼저 해야 할 일은 <a href=https://nodejs.org/>NodeJS</a>와 <a href=https://yarnpkg.com/>Yarn</a>을 설치하는 일이다. 저장소에 있는 README 파일에는 <a href=https://www.npmjs.com/>NPM</a>을 쓰라고 되어 있긴 하지만, NPM에 비해 Yarn이 훨씬 빠르고 편리하기 때문에 Yarn을 사용하도록 하자.</p><ul><li><a href=https://nodejs.org/en/download/>NodeJS Download</a></li><li><a href=https://yarnpkg.com/en/docs/install>Yarn Download</a></li></ul><p>설치가 끝나면 저장소를 클론할 차례다. 다음 명령어를 순차적으로 수행하고 나면 블로그 내용을 브라우저에서 볼 준비가 끝난다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>git clone https://github.com/11ty/eleventy-base-blog my-blog
+<span class=nb>cd</span> my-blog
+yarn
+yarn build --serve
+</code></pre></td></tr></table></div></div><p>그러면 창에 다음과 비슷한 메시지들이 출력될 것이다.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-bash data-lang=bash>yarn run v1.10.1
+$ eleventy --serve
+Writing _site/sitemap.xml from ./sitemap.xml.njk.
+Writing _site/feed/.htaccess from ./feed/htaccess.njk.
+Writing _site/feed/feed.xml from ./feed/feed.njk.
+Writing _site/index.html from ./index.njk.
+Writing _site/posts/firstpost/index.html from ./posts/firstpost.md.
+Writing _site/posts/fourthpost/index.html from ./posts/fourthpost.md.
+Writing _site/posts/secondpost/index.html from ./posts/secondpost.md.
+Writing _site/posts/thirdpost/index.html from ./posts/thirdpost.md.
+Writing _site/about/index.html from ./about/index.md.
+Writing _site/tags/index.html from ./tags-list.njk.
+Writing _site/posts/index.html from ./archive.njk.
+Writing _site/404.html from ./404.md.
+Writing _site/tags/another-tag/index.html from ./tags.njk.
+Writing _site/tags/second-tag/index.html from ./tags.njk.
+Writing _site/tags/number-2/index.html from ./tags.njk.
+Writing _site/tags/tagList/index.html from ./tags.njk.
+Copied <span class=m>2</span> items and Processed <span class=m>16</span> files in 0.69 seconds <span class=o>(</span>43.1ms each<span class=o>)</span>
+Watching…
+<span class=o>[</span>Browsersync<span class=o>]</span> Access URLs:
+ ----------------------------
+ Local: http://localhost:8080
+ ----------------------------
+    UI: http://localhost:3001
+ ----------------------------
+<span class=o>[</span>Browsersync<span class=o>]</span> Serving files from: _site
+</code></pre></td></tr></table></div></div><p>Local 옆에 있는 주소를 브라우저에 입력하면 블로그 내용을 볼 수 있다. <code>from</code> 오른편에 있는 파일 이름이 생성된 파일에 대한 소스 파일이고, 왼쪽에 있는 파일이 소스 파일로부터 생성된 웹페이지 파일이다. 궁금하니 이것 저것 열어서 어떤 구조로 되어 있는지 잘 살펴보자.</p><h2 id=how-to-post>How to Post</h2><p>전체 구조는 천천히 살펴보기로 하고, 먼저 포스팅을 하려면 어떻게 해야할지를 살펴보자.</p><p><code>./posts</code> 디렉토리를 살펴보면, 미리 만들어져 있는 4개의 포스팅이 보인다. 열어보게 되면 맨 앞엔 static site generator 대부분이 사용하는 <a href=https://www.11ty.io/docs/data-frontmatter/>front matter</a> 포맷의 헤더가 위치하고 있고, 그 밑에는 markdown 파일인 만큼 <a href=https://www.markdownguide.org/>Markdown</a>으로 작성된 포스트의 본체가 있는 것을 볼 수 있다.</p><p>간단하게 사용하려면 front matter의 <code>title</code> 필드와 <code>date</code> 필드를 적절하게 고치고, <code>tags</code> 필드에 필요한 태그를 달아준 뒤 내용을 써 보도록 하자. 처음 eleventy를 실행할 때 <code>--serve</code> 옵션을 줬기 때문에, 수정 후 저장만 하면 전체 사이트가 다시 빌드될 것이다. 그리고 열어놓은 브라우저도 Browsersync를 통해 자동으로 업데이트 될 것이다.</p><h2 id=future-work>Future Work</h2><p>다음 포스팅에서는, 포스트를 제외한 나머지 부분을 적당히 손보는 방법에 대해서 다루고자 한다.</p><h2 id=conclusion>Conclusion</h2><p>요즘에는 옛날에 비해 홈페이지를 만드는 방법에 있어서 어마어마한 선택지를 놓고 고를 수 있게 되었다. 그 중에서 요즘 널리 쓰이는 Modern Javascript도 배우고 문서 작업에 편리한 Markdown도 배울 수 있는 Eleventy로 사이트를 구축하는 법에 대해 맛을 보았다. 앞으로 블로그 업데이트와 함께 계속해서 쓸모없는 정보들을 포스팅해보도록 하겠다.</p><h2>Related topics</h2><h3><a href=/series/eleventy-blog/>Eleventy blog</a></h3><ul><li><a href=/posts/eleventy-blog/>Eleventy로 블로그 만들기 (1)</a></li><li><a href=/posts/eleventy-blog-2/>Eleventy로 블로그 만들기 (2)</a></li><li><a href=/posts/eleventy-blog-3/>Eleventy로 블로그 만들기 (3)</a></li></ul><script src=https://utteranc.es/client.js repo=gwangyi/gwangyi.github.io issue-term=pathname label=Comment theme=preferred-color-scheme crossorigin=anonymous async></script></article></main><footer id=footer>Copyright © 2020 Sungkwang Lee</footer></body></html>
