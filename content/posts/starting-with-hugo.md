@@ -1,6 +1,9 @@
 ---
 title: "Starting With Hugo"
 date: 2021-01-31T18:55:00+01:00
+tags:
+  - hugo
+  - github-actions
 isCJKLanguage: true
 ---
 
