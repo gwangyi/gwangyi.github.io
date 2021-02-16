@@ -34,5 +34,12 @@ main#content .highlight>.chroma {
 main#content .chroma .lntable pre {
     width: 100%;
 }
+
+main#content .gist-it-gist pre {
+    width: 100%;
+}
 }
 
+@media (max-width: 769px) {
+body { overflow-x: hidden; }
+}
