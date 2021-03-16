@@ -170,7 +170,7 @@ IN BEARBEITUNG
 
 ```bash
 RESULT=$(curl ... | pup "#covid19-2 h1 span text{}")
-[[ "$RESULT" = "IN BEARBEITUNG" ]] || telegram-send "$RESULT" && exit
+[[ "$RESULT" != "IN BEARBEITUNG" ]] && telegram-send "$RESULT" && exit
 ```
 
 `||` 은 다른 언어에서도 많이 볼 수 있는 논리합 연산자인데, [short-circuit evaluation][sce]을 지원한다. 즉, 앞 부분이 성공이면 뒷 부분은 실행하지 않고 성공으로 취급하고, 앞 부분이 실패라면 뒷 부분을 실행한 뒤 뒷 부분의 성공/실패 여부로 결과를 결정한다. 말인즉슨, `A || B` 는 `if not A then do B`의 의미를 가진다는 것이다. 마찬가지로 `A && B` 는 `if A then do B`가 될 것이다.
@@ -256,7 +256,7 @@ while true; do
 
   echo -n "$RESULT "; date
 
-  [[ "$RESULT" == "IN BEARBEITUNG" ]] || telegram-send "$RESULT" && exit
+  [[ "$RESULT" != "IN BEARBEITUNG" ]] && telegram-send "$RESULT" && exit
 
   sleep 60 
 done
