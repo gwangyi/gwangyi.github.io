@@ -31,4 +31,24 @@
     {{ printf `<link rel="stylesheet" href="%s">` $css.RelPermalink | safeHTML }}
 
     <title>{{ .Title }}</title>
+
+    {{ if (.Params.mermaid) }}
+    <!-- MermaidJS support -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      (function() {
+        {{ if (eq $dark "off") -}}
+        const dark = false;
+        {{ else if (eq $dark "on") -}}
+        const dark = true;
+        {{ else }}
+        const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        {{ end }}
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: dark ? 'dark' : 'base',
+        })
+      })()
+    </script>
+    {{ end }}
 </head>
