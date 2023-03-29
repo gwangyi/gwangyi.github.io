@@ -11,6 +11,10 @@ series: pyenv-in-termux
 isCJKLanguage: true
 ---
 
+__수정__
+- 오타 수정: `xarg` -> `xargs`
+- 필요한 패키지 설치 항목 추가
+
 ## Introduction
 
 [Termux][termux]는 훌륭한 유사-리눅스 환경을 안드로이드 장치 위에서 제공해준다. 단순한 유틸리티 뿐만 아니라, 컴파일러와 오픈소스 라이브러리의 소스코드까지도 함께 제공받을 수 있다. 그러한 배경에서, 안드로이드 장치 위에서 파이썬을 설치해서 다양한 장난감을 만들어 보는 것 또한 즐거운 일일 것이다.
@@ -81,14 +85,24 @@ pyenv update
 
 [pyenv][pyenv] 설치는 간단하지만, 이를 통해 파이썬을 빌드하는 것은 간단하지 않다. 앞에서 말했듯 [Termux][termux] 환경은 완전한 리눅스 환경이 아니라서 하드코딩된 디렉토리 패스와 같은 것들이 빌드 과정에서 문제를 지속적으로 일으킨다. 그러나 [Termux][termux]에 파이썬이 포팅되지 않은 것이 아니므로, [Termux][termux]의 패키지를 어떻게 관리하고 있는지 먼저 찾아볼 필요가 있다.
 
-### Obtain Patch
+### Install dependencies
 
-[Termux][termux]의 패키지는 [termux-packages][termux-packages] 리포지터리를 통하여 관리되고 있다. 해당 깃헙 리포지터리에 가 보면 현재 [Termux][termux]에서 지원하는 다양한 패키지들에 대한 패치와 빌드 스크립트를 확인할 수 있다. 그 중에 [파이썬 패키지][termux-python]를 보면 [Termux][termux] 환경에서 파이썬을 빌드하기 위해 고쳐야 될 부분들을 확인할 수 있다.
+[Termux][termux]의 패키지는 [termux-packages][termux-packages] 리포지터리를 통하여 관리되고 있다. 해당 깃헙 리포지터리에 가 보면 현재 [Termux][termux]에서 지원하는 다양한 패키지들에 대한 패치와 빌드 스크립트를 확인할 수 있다. 그 중에 [파이썬 패키지][termux-python]를 보면 [Termux][termux] 환경에서 파이썬을 빌드하기 위해 필요한 부분들을 확인할 수 있다.
 
-[pyenv][pyenv]는 빌드 과정이 모두 자동화되어 있어 중간에 소스코드를 수정할 시간은 없다. 대신, [patch][patch] 명령을 이용하여 패치를 적용하는 기능을 가지고 있다. 일반적인 [pyenv][pyenv]를 이용한 파이썬 설치는 `pyenv install 3.7.2` 와 같이 진행되지만, 패치를 먹이는 작업을 함께 수행한다면 다음과 같이 명령하면 된다.
+먼저 `TERMUX_PKG_DEPENDS` 항목을 보면 termux의 python 패키지가 의존하는 패키지 목록이 나온다. [termux 정책 변화][termux-no-more-develsplit]로 인해 별도의 `-dev` 패키지가 없어졌기 때문에, 목록에 있는 패키지를 먼저 설치해주자.
 
 ```bash
-cat python.patch | pyenv install -p 3.7.2
+pkg in build-essential gdbm libandroid-posix-semaphore libandroid-support libbz2 libcrypt libexpat libffi liblzma libsqlite ncurses ncurses-ui-libs openssl readline zlib
+```
+
+[termux-no-more-develsplit]: https://github.com/termux/termux-packages/pull/4071
+
+### Obtain Patch
+
+[pyenv][pyenv]는 빌드 과정이 모두 자동화되어 있어 중간에 소스코드를 수정할 시간은 없다. 대신, [patch][patch] 명령을 이용하여 패치를 적용하는 기능을 가지고 있다. 일반적인 [pyenv][pyenv]를 이용한 파이썬 설치는 `pyenv install 3.11.2` 와 같이 진행되지만, 패치를 먹이는 작업을 함께 수행한다면 다음과 같이 명령하면 된다.
+
+```bash
+cat python.patch | pyenv install -p 3.11.2
 ```
 
 `-p` 옵션을 주게 되면, 표준 입력으로부터 패치를 받아 적용하는 과정을 추가적으로 거치게 된다. 이 때 [patch][patch] 명령에는 `-p 0` 옵션으로 전달되기 때문에 패치 파일 내부의 파일 주소를 적절하게 조정해 줄 필요가 있다. 이전에는 환경변수로 [patch][patch]의 옵션을 지정할 수 있었던 것 같지만, 지금은 그렇지 않다.
@@ -112,6 +126,10 @@ cat python.patch | pyenv install -p 3.7.2
 
 http 다운로드를 위해서는 [curl][curl]이나 [wget][wget]을 쓸 수 있을텐데, 개인적으로 [wget][wget]이 더 편하므로 `pkg in wget`을 통해 설치하도록 하자. wget은 [BusyBox][busybox]에 내장되어 있기는 하나, 내장된 버전은 https를 처리하지 못하므로 따로 설치하는 것이 좋다.
 [jq][jq]는 [Termux][termux]에서 미리 빌드된 패키지로 설치 가능하다. `pkg in jq` 로 설치해두자.
+
+```bash
+pkg in wget jq
+```
 
 먼저 json 파일의 구조를 살펴보기 위해 다음과 같이 실행해보자.
 
@@ -182,7 +200,7 @@ wget -O - https://api.github.com/repos/termux/termux-packages/contents/packages/
 ```bash
 wget -O - https://api.github.com/repos/termux/termux-packages/contents/packages/python | \
          jq '.[]|select(.name|endswith(".patch"))|.download_url' | \
-         xarg wget -O - -q
+         xargs wget -O - -q
 ```
 
 결과는 다음과 비슷하게 나올 것이다.
@@ -206,7 +224,7 @@ diff -u -r ../Python-3.7.1/Lib/subprocess.py ./Lib/subprocess.py
 ```bash
 wget -O - https://api.github.com/repos/termux/termux-packages/contents/packages/python | \
          jq '.[]|select(.name|endswith(".patch"))|.download_url' | \
-         xarg wget -O - -q | \
+         xargs wget -O - -q | \
          sed "s%@TERMUX_PREFIX@%$PREFIX%g; s%^+++ [^/ ]*%+++ .%"
 ```
 
@@ -214,19 +232,22 @@ wget -O - https://api.github.com/repos/termux/termux-packages/contents/packages/
 이제 이 것을 `pyenv install -p`에 집어넣어 설치해보면, 뭔가가 진행되다 실패하는 것을 볼 수 있다. 패치에 실패하는 것은 [BusyBox][busybox]의 `patch` 애플릿의 기능이 딸려서이므로, `pkg in patch`를 통해 제대로 된 GNU patch 툴을 설치한 뒤에 재시도하면 된다.
 
 ```bash
-wget -O - "https://api.github.com/repos/termux/termux-packages/contents/packages/python?ref=5cac708d"    | \
+wget -O - "https://api.github.com/repos/termux/termux-packages/contents/packages/python?ref=4f87b638eb93d17b89c499c3ac7d4034d5e1ac5f"    | \
          jq '.[]|select(.name|endswith(".patch"))|.download_url' | \
-         xarg wget -O - -q | \
+         xargs wget -O - -q | \
          sed "s%@TERMUX_PREFIX@%$PREFIX%g; s%^+++ [^/ ]*%+++ .%" | \
-         pyenv install -p -v 3.7.2
+         pyenv install -p -v 3.11.2
 ```
 
-참고로 `pyenv install`에 `-v` 옵션을 주면 빌드 과정을 볼 수 있다. 일반적인 경우는 굳이 쓸 필요가 없지만, 우리처럼 제대로 안되는 환경에서 어거지로 돌려야 되는 경우에는 에러 메시지를 바로바로 볼 수 있게 해 두는 편이 문제 파악하기에 조금 더 편리하므로 계속 넣도록 하자. 물론 `-v` 옵션을 주지 않았다고 해서 로그를 볼 수 없는 것은 아니다.
+참고로 `pyenv install`에 `-v` 옵션을 주면 빌드 과정을 볼 수 있다. 일반적인 경우는 굳이 쓸 필요가 없지만, 우리처럼 제대로 안되는 환경에서 어거지로 돌려야 되는 경우에는 에러 메시지를 바로바로 볼 수 있게 해 두는 편이 문제 파악하기에 조금 더 편리하므로 계속 넣도록 하자. 물론 `-v` 옵션을 주지 않았다고 해서 로그를 볼 수 없는 것은 아니다. temp 디렉토리를 찾아보면 `python-build`로 시작하는 디렉토리와 로그 파일을 발견할 수 있다.
+
+그리고 `ref=` 뒤에 오는 해시값은 커밋의 해시값이다. 지금 넣어놓은 값은 [`python: Bump to 3.11.2`][termux-python-3.11.2] 커밋인데, 추후에 새로운 python 버전이 나와도 안정적으로 빌드할 수 있게 하기 위해 붙여두었다. 다른 버전의 python을 빌드하고 싶다면 떼거나 적절한 해시값으로 변경하도록 하자.
 
 이제부터는 플래그를 설정하고, 요구되는 라이브러리를 찾고, 빌드 과정의 소소한 문제들을 찾아가면서 파이썬을 설치할 수 있게 고쳐갈 것이다.
 
 [termux-packages]: https://github.com/termux/termux-packages
 [termux-python]: https://github.com/termux/termux-packages/tree/master/packages/python
+[termux-python-3.11.2]: https://github.com/termux/termux-packages/tree/4f87b638eb93d17b89c499c3ac7d4034d5e1ac5f
 [patch]: http://savannah.gnu.org/projects/patch/
 [github-api-get-contents]: https://developer.github.com/v3/repos/contents/#get-contents
 [curl]: https://curl.haxx.se/
