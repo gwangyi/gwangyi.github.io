@@ -9,7 +9,7 @@ Positive Learner, Software Engineer with HW experience
 
 ## Experience
 
-### Google Germany
+### Google
 
 __Site Reliability Engineer__: Dec. 2019 -- Present
   * Gerrit, git-on-borg
