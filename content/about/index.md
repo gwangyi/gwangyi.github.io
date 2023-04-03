@@ -13,6 +13,7 @@ Positive Learner, Software Engineer with HW experience
 
 __Site Reliability Engineer__: Dec. 2019 -- Present
   * Gerrit, git-on-borg
+  * [Colossus](https://cloud.google.com/blog/products/storage-data-transfer/a-peek-behind-colossus-googles-file-system?hl=en)
 
 ### Samsung Semiconductors
 
@@ -45,13 +46,13 @@ __BS Electrical Engineering and Computer Science__: Aug. 2009
 
 ### Programming Languages
 
-Python, C
+Python, C, Go
 : ★★★★☆
 
 C++, JavaScript
 : ★★★☆☆
 
-Java, TypeScript, Go, Ruby, SystemC
+Java, TypeScript, Ruby, SystemC
 : ★★☆☆☆
 
 Verilog, SystemVerilog
