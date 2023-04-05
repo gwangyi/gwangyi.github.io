@@ -8,7 +8,7 @@ pygmentsUseClasses = true
 
 [params]
   description = "To be survived wordwidely"
-  copyright = "Copyright © 2018-2021 Sungkwang Lee"
+  copyright = "Copyright © 2018-2023 Sungkwang Lee"
   dark = "auto"
   highlight = true
 
