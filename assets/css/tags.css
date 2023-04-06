@@ -5,6 +5,7 @@ aside#tags a, aside#tags a:hover {
   border-radius: .5rem;
   padding: .5rem 1rem;
   background: lightgray;
-  color: #222;;
+  color: #222;
   text-decoration: none;
+  margin: 0 .5em;
 }
