@@ -9,9 +9,14 @@ Positive Learner, Software Engineer with HW experience
 
 ## Experience
 
+### Samsung Electronics (VD)
+
+__Software Engineer__: Apr. 2025 -- Present
+  * RISC-V T/F - Introducing RISC-V architecture into Smart TVs
+
 ### Google
 
-__Site Reliability Engineer__: Dec. 2019 -- Present
+__Site Reliability Engineer__: Dec. 2019 -- Mar. 2025
   * Gerrit, git-on-borg
   * [Colossus](https://cloud.google.com/blog/products/storage-data-transfer/a-peek-behind-colossus-googles-file-system?hl=en)
 
