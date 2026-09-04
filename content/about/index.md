@@ -1,6 +1,6 @@
 ---
 title: "About"
-date: 2020-12-22T21:45:52+01:00
+date: 2026-09-04T13:34:00+09:00
 ---
 
 {{< toc >}}
@@ -11,7 +11,10 @@ Positive Learner, Software Engineer with HW experience
 
 ### Samsung Electronics (VD)
 
-__Software Engineer__: Apr. 2025 -- Present
+__Software Engineer__: Aug. 2025 -- Present.
+  * New Project T/F - Introducing new Smart TV platform
+
+__Hardware Engineer__: Apr. 2025 -- Jul. 2025
   * RISC-V T/F - Introducing RISC-V architecture into Smart TVs
 
 ### Google
