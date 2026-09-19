@@ -22,14 +22,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup hugo-shortcode-mdi
-        run: cd themes/mdi && yarn
-
       - name: Hugo setup
-        uses: peaceiris/actions-hugo@v2.4.13
+        uses: peaceiris/actions-hugo@v3
         with:
           # The Hugo version to download (if necessary) and use. Example: 0.58.2
-          hugo-version: '0.79.1'
+          hugo-version: '0.119.0'
           # Download (if necessary) and use Hugo extended version. Example: true
           extended: true
 
