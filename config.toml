@@ -1,6 +1,6 @@
 baseURL = "https://gwangyi.github.io/"
 title = "Worldwide gwangyi"
-theme = ["mdi", "etch"]
+theme = ["etch"]
 languageCode = "ko-KR"
 enableInlineShortcodes = true
 pygmentsCodeFences = true

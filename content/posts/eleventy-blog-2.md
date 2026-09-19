@@ -20,7 +20,7 @@ isCJKLanguage: true
 
 [Github][github]에는 워낙 다양한 오픈소스 프로젝트들이 널려 있어서 그 중에 마음에 드는 것을 찾을 수만 있다면 최고의 보물창고임에는 이론의 여지가 없다. 하지만 먼저 말했듯이, 너무 다양하기 때문에 원하는 것을 찾기가 쉽지 않다는 점에 착안, 특정 주제에 관련된 유명한 프로젝트들을 큐레이트해서 보여주는 다양한 저장소들 또한 존재한다. 아마도 최초의 큐레이팅 저장소의 이름이 그랬기 때문일 것 같지만, 그런 저장소들은 대부분 `awesome-something` 과 같은 이름을 하고 있는 경우가 많다.
 
-Github에서 awesome css frameworks를 검색해보면, [{{% mdi `github-circle` %}}troxler/awesome-css-frameworks](https://github.com/troxler/awesome-css-frameworks/) 저장소가 제일 위에 나온다. 이 중에서 [Bootstrap][bootstrap], [Milligram][milligram], [Bulma][bulma] 같은 프레임워크들을 볼 수 있을 것이다.
+Github에서 awesome css frameworks를 검색해보면, [troxler/awesome-css-frameworks](https://github.com/troxler/awesome-css-frameworks/) 저장소가 제일 위에 나온다. 이 중에서 [Bootstrap][bootstrap], [Milligram][milligram], [Bulma][bulma] 같은 프레임워크들을 볼 수 있을 것이다.
 
 [Bootstrap][bootstrap]은 보편적으로 많이 쓰이는 프레임워크이고, 당시 나왔을 때 나같은 디알못도 유려한 사이트를 만들 수 있도록 컴포넌트들을 미리 다 정의해 둠으로써 디자인보다는 내용에 집중할 수 있게 해줘서 엄청난 반향을 불러일으켰던 프레임워크이다. 다만 단점이 있다면, Javascript 프레임워크 중 하나인 [jQuery][jquery]와 강하게 결합되어 HTML/CSS만으로는 사이트를 제작할 수 없다는 것과, 이번 [Eleventy][eleventy] 웹사이트 제작과는 큰 상관이 없지만 다른 종류의 Javascript framework와 섞어 쓰기가 곤란하다는 점이 있다.
 
@@ -49,7 +49,7 @@ Github에서 awesome css frameworks를 검색해보면, [{{% mdi `github-circle`
 
 [EJS][ejs]는 [Ruby][ruby]의 [ERB][erb]에서 영감을 받은 것으로, 특별한 별도의 템플릿 문법 없이 [php][php]와 비슷한 느낌으로 Javascript를 이용해 템플릿을 만들 수 있게 해준다. [Handlebars][handlebars], [Liquid][liquid], [Mustache][mustache], [Nunjucks][nunjucks]는 서로서로 비슷하게 생겨서 영향을 받았지만, 키워드 면에서 조금씩 차이가 있다. 이 중 [Liquid][liquid]는 static site generator의 시초격 되는 [Jekyll][jekyll]에서 채택한 것이고, [Nunjucks][nunjucks]는 [Python][python]계에서 널리 쓰이는 템플릿 언어인 [Jinja][jinja]의 Javascript 포팅 버전이다. 한번 배운건 배우는데 들인 시간이 아까워서라도 마르고 닳도록 써먹어야 되므로, [Python][python]에서도 쓸 일이 있을 [Nunjucks][nunjucks]를 기본 템플릿 엔진으로 써보도록 하자.
 
-한가지 주의할 것은, 앞에서 참조했던 [{{% mdi `github-circle` %}}11ty/eleventy-base-blog](https://github.com/11ty/eleventy-base-blog)의 기본 설정으론 html 파일은 [Nunjucks][nunjucks]를 쓰지만 md 파일은 [Liquid][liquid]로 지정되어 있다. 템플릿 엔진을 이것저것 쓰면 정신사나우니 이걸 [Nunjucks][nunjucks]로 바꿔서 쓰도록 하자. 바꾸고 싶을 때는 `.eleventy.js` 파일을 수정하면 된다.
+한가지 주의할 것은, 앞에서 참조했던 [11ty/eleventy-base-blog](https://github.com/11ty/eleventy-base-blog)의 기본 설정으론 html 파일은 [Nunjucks][nunjucks]를 쓰지만 md 파일은 [Liquid][liquid]로 지정되어 있다. 템플릿 엔진을 이것저것 쓰면 정신사나우니 이걸 [Nunjucks][nunjucks]로 바꿔서 쓰도록 하자. 바꾸고 싶을 때는 `.eleventy.js` 파일을 수정하면 된다.
 
 ```javascript
 return {
