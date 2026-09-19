@@ -26,7 +26,7 @@ jobs:
         uses: peaceiris/actions-hugo@v3
         with:
           # The Hugo version to download (if necessary) and use. Example: 0.58.2
-          hugo-version: '0.119.0'
+          hugo-version: '0.166.0'
           # Download (if necessary) and use Hugo extended version. Example: true
           extended: true
 
