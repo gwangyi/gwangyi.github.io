@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on Worldwide gwangyi</title><link>https://gwangyi.github.io/tags/</link><description>Recent content in Tags on Worldwide gwangyi</description><generator>Hugo -- gohugo.io</generator><language>ko-KR</language><lastBuildDate>Sat, 19 Sep 2026 20:43:00 +0900</lastBuildDate><atom:link href="https://gwangyi.github.io/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>PDF 회전 도구 만들기 (feat. agy)</title><link>https://gwangyi.github.io/posts/pdf-rotate/</link><pubDate>Sat, 19 Sep 2026 20:43:00 +0900</pubDate><guid>https://gwangyi.github.io/posts/pdf-rotate/</guid><description>&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on Worldwide gwangyi</title><link>https://gwangyi.github.io/tags/</link><description>Recent content in Tags on Worldwide gwangyi</description><generator>Hugo -- gohugo.io</generator><language>ko-KR</language><lastBuildDate>Sat, 19 Sep 2026 23:54:00 +0900</lastBuildDate><atom:link href="https://gwangyi.github.io/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>SL-J1680 프린터를 네트워크 프린터로 만들기</title><link>https://gwangyi.github.io/posts/sl-j1680-printer/</link><pubDate>Sat, 19 Sep 2026 23:54:00 +0900</pubDate><guid>https://gwangyi.github.io/posts/sl-j1680-printer/</guid><description>&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://www.samsung.com/sec/support/model/SL-J1680/"&gt;SL-J1680&lt;/a&gt; 프린터는 몇만 원 정도에 살 수 있는 가성비 높은 프린터 중 하나다. 심지어 스캐너도 붙어 있는 복합기라 활용성은 배가 된다. 다만, 네트워크 프린트 기능이 없고 윈도 드라이버밖에 지원되지 않아 용처가 조금 제한되는 문제가 있긴 하다.&lt;/p&gt;
+&lt;p&gt;예전에 쓰던 HP DeskJet 프린터는 네트워크 프린트와 스캔 모두 잘 됐기 때문에 편리하게 잘 쓰고 있었는데, &lt;a href="https://gwangyi.github.io/posts/pdf-rotate/"&gt;다른 포스트&lt;/a&gt;에서 언급한 것과 같이 바꾸게 되면서 아쉬움을 많이 느끼던 차였다. 특히 데스크탑이 집에 없어서 노트북에 연결해 써야 하는데, 노트북은 들고다닐 일이 많아서 매일 꽂고 빼는게 너무 귀찮고, 공유해 쓰더라도 노트북이 켜져 있어야 하니 될 일이 아니었다. 하지만, 집에는 &lt;a href="https://www.raspberrypi.com/"&gt;Raspberry Pi&lt;/a&gt; 보드가 하나 홈 서버로 돌고 있었고 거기 꽂아서 HP DeskJet의 능력을 다시 살려내봐야겠다는 생각이 들었다.&lt;/p&gt;
+&lt;p&gt;일반적인 리눅스 배포판에는 &lt;a href="https://www.cups.org/doc/overview.html"&gt;CUPS&lt;/a&gt;라는 서버가 설치되어 있고 이 서비스가 프린팅을 담당하도록 구성되어 있다. 특기할 만한 부분은 애플이 최초 개발자로부터 &lt;a href="https://www.cups.org/doc/overview.html"&gt;CUPS&lt;/a&gt;를 인수해서 맥의 기본 프린팅 서비스로 도입했었다는 부분이다. 뭐든 디테일에 집착하는 애플답게 &lt;a href="https://www.cups.org/doc/overview.html"&gt;CUPS&lt;/a&gt;는 macOS 뿐만 아니라 iOS의 기본 프린팅 서비스로 도입되며 무선 프린트 기능인 &lt;a href="https://support.apple.com/en-us/102895"&gt;AirPrint&lt;/a&gt;와 드라이버 설치 없이 인쇄가 가능하게 하는 &lt;a href="https://www.pwg.org/ipp/everywhere.html"&gt;IPP everywhere&lt;/a&gt; 기능을 지원한다. 즉, &lt;a href="https://www.samsung.com/sec/support/model/SL-J1680/"&gt;SL-J1680&lt;/a&gt; 프린터를 잘 설정하면 공짜로 &lt;a href="https://support.apple.com/en-us/102895"&gt;AirPrint&lt;/a&gt;를 지원하는 와이파이 지원 프린터가 된다는 것이다!&lt;/p&gt;
+&lt;h2 id="setup"&gt;Setup&lt;/h2&gt;
+&lt;p&gt;그러면 이를 이루기 위해 지금 가지고 있는 것과 뭐가 더 필요한지를 잘 따져볼 필요가 있다. SL-J1680 프린터는 삼성 프린터인데, 이쪽에 관심이 있는 사람이라면 &lt;a href="https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EC%97%90%EC%8A%A4%ED%94%84%EB%A6%B0%ED%8C%85%EC%86%94%EB%A3%A8%EC%85%98-%EA%B3%B5%EC%8B%9D-%EC%B6%9C%EB%B2%94"&gt;삼성의 프린터 사업부가 2017년에 HP에 매각된 사실&lt;/a&gt;을 잘 알고 있을 것이다. 그 이후로 HP 제품에 브랜드만 삼성을 달고 나오는 프린터들이 있는데, SL-J1680이 그런 프린터 중 하나다. 그러다 보니 삼성 드라이버가 지원되지 않는 OS 사용자는 해당하는 HP 프린터 드라이버를 억지로 설치하면 사용할 수 있게 되는 경우가 많다. 사실 업무용 맥북을 주로 사용하던 시기에도 비슷한 방식으로 드라이버를 설치해 썼었다. 그래서 SL-J1680에 해당하는 드라이버는 &lt;a href="https://support.hp.com/kr-ko/drivers/hp-deskjet-2130-all-in-one-printer-series/model/7174551"&gt;HP DeskJet 2130 Series&lt;/a&gt;이다. 사진을 보면 알겠지만 똑같이 생겼다.&lt;/p&gt;
+&lt;div style="max-width: 108%; margin-left: -3.8%; display: flex;"&gt;
+&lt;div style="width: 50%; display: flex; align-items: center;"&gt;&lt;img src="https://gwangyi.github.io/img/sl-j1680.png" alt="SL-J1680"/&gt;&lt;/div&gt;
+&lt;div style="width: 50%; display: flex; align-items: center;"&gt;&lt;img src="https://gwangyi.github.io/img/hp-deskjet-2130.png" alt="HP DeskJet 2130"/&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;왼쪽이 삼성, 오른쪽이 HP 프린터다. 그럼 이제 이걸 가지고서 &lt;a href="https://www.cups.org/doc/overview.html"&gt;CUPS&lt;/a&gt;에 등록해 보도록 하자.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;필요한 HP 드라이버를 설치한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt install -y hplip printer-driver-hpcups
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;드라이버의 URL을 확인한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo lpinfo -m &lt;span class="p"&gt;|&lt;/span&gt; grep -Ei &lt;span class="s2"&gt;&amp;#34;^drv.*hpcups.*deskjet.*2130&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="3"&gt;
+&lt;li&gt;장치의 URL을 확인한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo lpinfo -v &lt;span class="p"&gt;|&lt;/span&gt; grep -Ei &lt;span class="s2"&gt;&amp;#34;^direct usb://&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="4"&gt;
+&lt;li&gt;프린터를 추가한다. 위에서 나온 정보를 활용해서 명령을 만들면 된다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo lpadmin -p SL-J1680 -E -v usb://Samsung/SL-J1680%20series?serial&lt;span class="o"&gt;=&lt;/span&gt;xxxxxxxxxx&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nv"&gt;interface&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; -m drv:///hpcups.drv/hp-deskjet_2130_series.ppd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;내 경우는 시리얼을 제외하고 위와 같았는데, 명령어를 만드는게 어렵다면 다음 명령으로 한번에 실행할 수 있다. 다만 2, 3번 명령에서 항목이 하나만 나오는지 확인하고 실행하는 것이 좋다.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo lpadmin -p SL-J1680 -E &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -o printer-is-shared&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -v &lt;span class="k"&gt;$(&lt;/span&gt;sudo lpinfo -v &lt;span class="p"&gt;|&lt;/span&gt; grep -Ei &lt;span class="s1"&gt;&amp;#39;^direct usb://&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;{ print $2 }&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -m &lt;span class="k"&gt;$(&lt;/span&gt;sudo lpinfo -m &lt;span class="p"&gt;|&lt;/span&gt; grep -Ei &lt;span class="s1"&gt;&amp;#39;^drv.*hpcups.*deskjet.*2130&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;여기서 &lt;code&gt;Printer drivrs are deprecated and will stop working in a future version of CUPS.&lt;/code&gt; 라는 경고가 뜰 수 있다. CUPS 3.0부터는 &lt;a href="https://www.pwg.org/ipp/everywhere.html"&gt;IPP Everywhere&lt;/a&gt; 네트워크 프린터 지원만 남기고 PPD 방식이 지원되지 않을 예정이라 나오는 문구로, &lt;a href="https://github.com/OpenPrinting/hplip-printer-app"&gt;hplip-printer-app&lt;/a&gt;과 같은 별도의 &lt;a href="https://www.pwg.org/ipp/everywhere.html"&gt;IPP Everywhere&lt;/a&gt; 어댑터가 필요해질 것이다. 이건 다음 기회에 다루어 보도록 하자. 짧게 테스트해본 결과 arm64용 docker image는 제공되지 않아서 간단하게 사용할 수 있을 것 같지는 않다..&lt;/p&gt;
+&lt;h2 id="test-print"&gt;Test print&lt;/h2&gt;
+&lt;p&gt;CLI로 테스트 프린트를 하는 방법도 있겠지만, 설정한 김에 웹 인터페이스를 사용해보도록 하자. CUPS web interface의 포트번호는 631번을 기본값으로 사용한다. 방금 프린터 이름읗 SL-J1680으로 생성했으므로 다음 주소로 프린터 관리 페이지에 접근할 수 있을 것이다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;http://127.0.0.1:631/printers/SL-J1680&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;만약 Raspberry Pi에서 접속하는게 아니라면 127.0.0.1 대신 Raspberry Pi의 IP를 사용하자. Maintenance 드롭박스를 눌러서 Print Test Page를 선택하면 바로 인쇄된다.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://gwangyi.github.io/img/testpage.png" alt="Test Page"&gt;&lt;/p&gt;
+&lt;p&gt;이런 페이지가 나왔다면 다 됐다! 위에서 shared 설정도 했으므로 다른 컴퓨터나 심지어 스마트폰에서도 자동으로 프린터가 보일 것이다. 안 보인다면 ipp 방식으로 IP 입력하면 인쇄가 가능하다.&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;사실 많은 부분을 [Gemini][gemini] 도움을 받아 수행했다. 시키는 대로 해보고 그 결과에 대한 감상을 공유하는 문서나 다름없다. 그래도 이렇게 기록해 두면, 나중에 다시 할 때 참고할 만한 자료로 쓸 수 있지 않을까?&lt;/p&gt;
+&lt;p&gt;그리고 다음은 스캐너도 네트워크로 가능하도록 만들어야 한다. 그리고 나서 시간이 남으면 &lt;a href="https://github.com/OpenPrinting/hplip-printer-app"&gt;hplip-printer-app&lt;/a&gt;을 다뤄보도록 하자.&lt;/p&gt;</description></item><item><title>PDF 회전 도구 만들기 (feat. agy)</title><link>https://gwangyi.github.io/posts/pdf-rotate/</link><pubDate>Sat, 19 Sep 2026 20:43:00 +0900</pubDate><guid>https://gwangyi.github.io/posts/pdf-rotate/</guid><description>&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;최근 LLM의 발달은 정말로 눈부시다. 통번역 분야에서는, 물론 전문 통번역사의 레벨에 이르지는 못하지만, 상당히 많은 저수준 수요를 이미 대체하기 시작했고 &lt;a href="https://cursor.com/"&gt;Cursor&lt;/a&gt;를 시작으로 SW 개발자들의 업무를 굉장히 많이 - 때로는 전부 - 도와주는 툴들도 널리 사용되고 있다.&lt;/p&gt;
 &lt;p&gt;일반적으로 가장 고성능 LLM이라고 하면 &lt;a href="https://openai.com/about/"&gt;OpenAI&lt;/a&gt;사의 &lt;a href="https://chatgpt.com/"&gt;ChatGPT&lt;/a&gt;, &lt;a href="https://www.anthropic.com/"&gt;Anthropic&lt;/a&gt;사의 &lt;a href="https://claude.ai/"&gt;Claude&lt;/a&gt;, 그리고 &lt;a href="https://about.google/company-info/"&gt;Google&lt;/a&gt;의 &lt;a href="https://gemini.google.com/"&gt;Gemini&lt;/a&gt; 3개를 꼽는다. 각각 &lt;a href="https://chatgpt.com/codex/"&gt;Codex&lt;/a&gt;, &lt;a href="https://claude.com/product/claude-code"&gt;Claude Code&lt;/a&gt;, &lt;a href="https://geminicli.com/"&gt;Gemini CLI&lt;/a&gt;라는 개발용 도구를 제공하며, 최근 &lt;a href="https://about.google/company-info/"&gt;Google&lt;/a&gt;은 &lt;a href="https://antigravity.google/"&gt;Antigravity&lt;/a&gt;라는 도구를 발표하며 개인 사용자는 &lt;a href="https://geminicli.com/"&gt;Gemini CLI&lt;/a&gt; 대신 &lt;a href="https://antigravity.google/"&gt;Antigravity&lt;/a&gt;를 사용하도록 하고 있다. 이 중에서 나는 &lt;a href="https://gemini.google/subscriptions/"&gt;Google AI Pro&lt;/a&gt; 요금제를 사용하고 있기 때문에 &lt;a href="https://antigravity.google/"&gt;Antigravity&lt;/a&gt;를 종종 쓰면서 취미생활이나 공부 등에 활용중이다. 사실 &lt;a href="https://gemini.google.com/"&gt;Gemini&lt;/a&gt;는 최근 세 모델 중 최약체를 맡고 있는 중이라 못미더워 하는 사람들도 많을 것이다. 이 요금제는 Google 서비스에서 사용할 수 있는 스토리지를 5 TB까지 제공해주는데, &lt;a href="https://photos.google.com/"&gt;Google Photo&lt;/a&gt;를 십수년 전부터 꾸준히 사용해오던 나로서는 사진 용량이 무료 용량 15 GB는 애저녁에 넘겼고 이제는 전체 스토리지 사용량이 250 GB를 넘어버린지라 어차피 저장공간에 돈을 쓴다면 조금 더 써서 이거도 해야지, 같은 느낌으로 이용하고 있다.&lt;/p&gt;
 &lt;p&gt;아일랜드 생활을 정리하기 전에 네달 가량 한국에서 생활했었는데, 급하게 인쇄할 문서가 꽤 돼서 쓰고 버릴 용도로 삼성 프린터 중 제일 쌌던 &lt;a href="https://www.samsungsvc.co.kr/download/view?code=SL-J1680"&gt;SL-J1680&lt;/a&gt; 프린터를 샀다. 잉크젯이고 스캐너도 있는 복합기인데 몇만원 수준으로 살 수 있으니 가성비는 괜찮았다. 다만 문제가, 윈도우즈용 드라이버만 제공하는데 당시 업무용 맥북에서 쓰려면 꼼수가 좀 필요했었다. 이와 관련된 이야기는 다른 포스트에서 한번 더 다룰 수 있을 것 같다. 그리고 한가지 별 것 아니지만 신경쓰이는 문제가 있었는데, 하단부의 인쇄불가영역이 좀 넓은 문제가 있었다. 주민등록등본을 떼면 아래 바코드 부분까지 간신히 나오고 그 밑의 문구는 인쇄가 안되는 정도였다. 대부분의 문서는 위에 중요한 정보가 모여있고 아래는 여백이거나 중요하지 않은 꼬릿말 정도라 큰 문제는 안됐는데 문제는 만들기 도안에서 터졌다.&lt;/p&gt;
